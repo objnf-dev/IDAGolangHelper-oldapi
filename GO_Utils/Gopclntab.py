@@ -23,14 +23,14 @@ def check_is_gopclntab(addr):
 
 
 def findGoPcLn():
-    pos = idautils.Functions().next() # Get some valid address in .text segment
-    while True:
-        possible_loc = idc.FindBinary(pos, idc.SEARCH_DOWN, lookup) #header of gopclntab
-        if possible_loc == idc.BADADDR:
-            break
-        if check_is_gopclntab(possible_loc):
-            return possible_loc
-        pos = possible_loc+1
+    possible_loc = idc.FindBinary(0, idc.SEARCH_DOWN, lookup, 16) #header of gopclntab
+    print "Possible gopclntab: %s" % hex(possible_loc)
+
+    while possible_loc != idc.BADADDR:
+    	if check_is_gopclntab(possible_loc):
+        	return possible_loc
+    	else:
+    		possible_loc = ida_search.FindBinary(possible_loc+1, idc.SEARCH_DOWN, lookup, 16)
     return None
 
 

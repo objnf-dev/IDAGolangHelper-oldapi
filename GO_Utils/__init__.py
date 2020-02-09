@@ -45,7 +45,7 @@ class GoSettings(object):
         if Firstmoduledata.isGo17(fmd, self.bt_obj) is True:
             vers = "go1.7"
         elif Firstmoduledata.isGo18_10(fmd, self.bt_obj) is True:
-            vers = "go1.8 or go1.9 or go1.10"
+            vers = "go1.8 or go1.9 or go1.10 or go1.11 or go1.12 or go1.13"
         return "According to moduleData struct is should be %s" % (vers)
 
     def renameFunctions(self):
@@ -53,24 +53,30 @@ class GoSettings(object):
         Gopclntab.rename(gopcln_tab, self.bt_obj)
 
     def getVersionByString(self):
-        pos = idautils.Functions().next()
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 31 30") != idc.BADADDR:
+        end_ea =  idc.SegEnd(0)
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 31 33", 16, idc.SEARCH_DOWN) != idc.BADADDR:
+            return 'Go 1.13'
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 31 32", 16, idc.SEARCH_DOWN) != idc.BADADDR:
+            return 'Go 1.12'
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 31 31", 16, idc.SEARCH_DOWN) != idc.BADADDR:
+            return 'Go 1.11'
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 31 30", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.10'
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 39") != idc.BADADDR:
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 39", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.9'
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 38") != idc.BADADDR:
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 38", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.8'
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 37") != idc.BADADDR:
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 37", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.7'
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 36") != idc.BADADDR:
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 36", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.6'
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 35") != idc.BADADDR:
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 35", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.5'
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 34") != idc.BADADDR:
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 34", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.4'
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 33") != idc.BADADDR:
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 33", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.3'
-        if idc.FindBinary(pos, idc.SEARCH_DOWN, "67 6f 31 2e 32") != idc.BADADDR:
+        if idc.FindBinary(0, end_ea, "67 6f 31 2e 32", 16, idc.SEARCH_DOWN) != idc.BADADDR:
             return 'Go 1.2'
 
     def createTyper(self, typ):
