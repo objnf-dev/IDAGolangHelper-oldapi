@@ -26,6 +26,7 @@ GoLoader
 <##Try to detemine go version based on moduledata:{iButton1}>
 <##Try to detemine go version based on version string:{iButton2}>
 <##Rename functions:{iButton3}>
+<##Rename structs:{iButton6}>
 Go version:
 <Go1.2:{r2}>
 <Go1.4:{r4}>
@@ -46,6 +47,7 @@ Go version:
             'iButton3': Form.ButtonInput(self.OnButton3),
             'iButton4': Form.ButtonInput(self.OnButton4),
             'iButton5': Form.ButtonInput(self.OnButton5),
+            'iButton6': Form.ButtonInput(self.OnButton6),
             'cGoVers': Form.RadGroupControl(("r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r13")),
             'FormChangeCb': Form.FormChangeCb(self.OnFormChange),
         })
@@ -70,6 +72,8 @@ Go version:
         typ =  self.GetControlValue(self.cGoVers)
         GO_SETTINGS.typesModuleData(typ)
 
+    def OnButton6(self, code=0):
+        GO_SETTINGS.renameStructs()
 
     def OnFormChange(self, fid):
         return 1
@@ -83,6 +87,7 @@ def ida_main():
     # Create form
     global f
     idaapi.add_hotkey("Shift-S", GO_Utils.GoStrings.stringify)
+    idaapi.add_hotkey("Shift-D", GO_SETTINGS.getStructDefByCursor)
     f = MyForm()
 
     # Compile (in order to populate the controls)
