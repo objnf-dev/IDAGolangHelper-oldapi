@@ -32,7 +32,7 @@ class GoSettings(object):
         if gopcln_addr is None:
             gopcln_addr = Gopclntab.findGoPcLn()
             self.setVal("gopcln", gopcln_addr)
-        return gopcln_addr
+        return "gopcln_addr is " + str(gopcln_addr)
 
     def findModuleData(self):
         gopcln_addr = self.getGopcln()
@@ -45,6 +45,16 @@ class GoSettings(object):
         v = f.get_compiler_version()
         f.close()
         return "Go Compiler Version should be %s" % (v.name)
+    
+    def outputBinaryPackageList(self):
+    	f = pygore.GoFile(self.binaryPath)
+        gopkgs = f.get_packages()
+        f.close()
+        pkg_file = open(self.binaryPath + "_packages.txt", "w")
+        for i in gopkgs:
+        	pkg_file.write(i.name + "\n")
+        pkg_file.close()
+        return "Package info saved to " + self.binaryPath + "_packages.txt"
 
     def renameFunctions(self):
         gopcln_tab = self.getGopcln()
@@ -100,15 +110,17 @@ class GoSettings(object):
         #pkgs = f.get_packages()
         types = f.get_types()
         f.close()
+        struct_file = open(self.binaryPath + "_struct.txt", "w")
         for t in types:
             Utils.rename(t.addr, t.name)
-
             self.structsDef[t.addr] = self._getStructDef(t)
-            print t.addr, t.name
+            struct_file.write(str(t.addr) + " " + str(t.name) + "\n")
+        print "Struct info saved to " + self.binaryPath + "_struct.txt"
+        struct_file.close()
     
     def getStructDefByCursor(self):
         addr = idc.GetOperandValue(idc.here(),1)
-        print(self.structsDef[addr])
+        print self.structsDef[addr]
 
     def getVersionByString(self):
         if idc.FindBinary(0, idc.SEARCH_DOWN, "67 6f 31 2e 31 33", 16) != idc.BADADDR:

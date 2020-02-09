@@ -99,7 +99,7 @@ class Method(Function):
     def __init__(self, name, line_length, line_start, line_end,
                  offset, end, filename, package_name, receiver):
         self.receiver = receiver
-        super().__init__(name, line_length, line_start, line_end, offset, end,
+        super(Method, self).__init__(name, line_length, line_start, line_end, offset, end,
                          filename, package_name)
 
 

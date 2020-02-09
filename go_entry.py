@@ -27,6 +27,7 @@ GoLoader
 <##Try to detemine go version based on version string:{iButton2}>
 <##Rename functions:{iButton3}>
 <##Rename structs:{iButton6}>
+<##Save package info to txt:{iButton7}>
 Go version:
 <Go1.2:{r2}>
 <Go1.4:{r4}>
@@ -48,6 +49,7 @@ Go version:
             'iButton4': Form.ButtonInput(self.OnButton4),
             'iButton5': Form.ButtonInput(self.OnButton5),
             'iButton6': Form.ButtonInput(self.OnButton6),
+            'iButton7': Form.ButtonInput(self.OnButton7),
             'cGoVers': Form.RadGroupControl(("r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r13")),
             'FormChangeCb': Form.FormChangeCb(self.OnFormChange),
         })
@@ -74,6 +76,9 @@ Go version:
 
     def OnButton6(self, code=0):
         GO_SETTINGS.renameStructs()
+
+    def OnButton7(self, code=0):
+        GO_SETTINGS.outputBinaryPackageList()
 
     def OnFormChange(self, fid):
         return 1
