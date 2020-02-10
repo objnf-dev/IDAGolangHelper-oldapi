@@ -32,7 +32,8 @@ class GoSettings(object):
         if gopcln_addr is None:
             gopcln_addr = Gopclntab.findGoPcLn()
             self.setVal("gopcln", gopcln_addr)
-        return "gopcln_addr is " + str(gopcln_addr)
+            print "gopcln_addr is " + str(gopcln_addr)
+        return gopcln_addr
 
     def findModuleData(self):
         gopcln_addr = self.getGopcln()
@@ -48,10 +49,23 @@ class GoSettings(object):
     
     def outputBinaryPackageList(self):
     	f = pygore.GoFile(self.binaryPath)
-        gopkgs = f.get_packages()
+        gopkgs_1 = f.get_packages()
+        gopkgs_2 = f.get_vendor_packages()
+        gopkgs_3 = f.get_std_lib_packages()
+        gopkgs_4 = f.get_unknown_packages()
         f.close()
         pkg_file = open(self.binaryPath + "_packages.txt", "w")
-        for i in gopkgs:
+        pkg_file.write("Current Package:\n")
+        for i in gopkgs_1:
+        	pkg_file.write(i.name + "\n")
+        pkg_file.write("\n\nVendor Packages:\n")
+        for i in gopkgs_2:
+        	pkg_file.write(i.name + "\n")
+        pkg_file.write("\n\nStandard Libraries:\n")
+        for i in gopkgs_3:
+        	pkg_file.write(i.name + "\n")
+        pkg_file.write("\n\nUnclassified Packages:\n")
+        for i in gopkgs_4:
         	pkg_file.write(i.name + "\n")
         pkg_file.close()
         return "Package info saved to " + self.binaryPath + "_packages.txt"

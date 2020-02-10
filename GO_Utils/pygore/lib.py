@@ -36,7 +36,7 @@ class CompilerVersion:
         self.timestamp = timestamp
 
 
-class Function:
+class Function(object):
     '''
     Function is a representation of a Go function.
 
