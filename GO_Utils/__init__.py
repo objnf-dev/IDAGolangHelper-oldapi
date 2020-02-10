@@ -6,6 +6,7 @@ import Types
 import idc
 import idautils
 import pygore
+import codecs
 
 class GoSettings(object):
 
@@ -54,7 +55,7 @@ class GoSettings(object):
         gopkgs_3 = f.get_std_lib_packages()
         gopkgs_4 = f.get_unknown_packages()
         f.close()
-        pkg_file = open(self.binaryPath + "_packages.txt", "w")
+        pkg_file = codecs.open(self.binaryPath + "_packages.txt", "w", encoding="utf-8")
         pkg_file.write("Current Package:\n")
         for i in gopkgs_1:
         	pkg_file.write(i.name + "\n")
@@ -68,7 +69,8 @@ class GoSettings(object):
         for i in gopkgs_4:
         	pkg_file.write(i.name + "\n")
         pkg_file.close()
-        return "Package info saved to " + self.binaryPath + "_packages.txt"
+        print "Package info saved to " + self.binaryPath + "_packages.txt"
+        return
 
     def renameFunctions(self):
         gopcln_tab = self.getGopcln()
@@ -124,7 +126,7 @@ class GoSettings(object):
         #pkgs = f.get_packages()
         types = f.get_types()
         f.close()
-        struct_file = open(self.binaryPath + "_struct.txt", "w")
+        struct_file = codecs.open(self.binaryPath + "_struct.txt", "w", encoding="utf-8")
         for t in types:
             Utils.rename(t.addr, t.name)
             self.structsDef[t.addr] = self._getStructDef(t)

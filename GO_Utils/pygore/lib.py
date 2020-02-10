@@ -2,6 +2,8 @@
 # Use of this source code is governed by the license that
 # can be found in the LICENSE file.
 
+# -*- coding: utf-8 -*-
+
 import internal as internal
 from ctypes import c_char_p
 
@@ -308,9 +310,9 @@ class GoFile:
 def _get_compiler_version(path):
     pcv = internal._c_getCompilerVersion(path)
     cv = pcv.contents
-    return CompilerVersion(str(cv.name.decode('utf-8', 'replace')),
-                           str(cv.sha.decode('utf-8', 'replace')),
-                           str(cv.timestamp.decode('utf-8', 'replace')))
+    return CompilerVersion(str(cv.name),
+                           str(cv.sha),
+                           str(cv.timestamp))
 
 
 def _parsePackages(pps):
@@ -323,34 +325,34 @@ def _parsePackages(pps):
         # Functions
         for j in range(p.numFuncs):
             f = p.functions[j][0]
-            name = str(f.name.decode('utf-8', 'replace'))
+            name = str(f.name)
             srcl = int(f.srcLineLength)
             srcs = int(f.srcLineStart)
             srce = int(f.srcLineEnd)
             off = int(f.offset)
             end = int(f.end)
-            fn = str(f.fileName.decode('utf-8', 'replace'))
-            pn = str(f.packageName.decode('utf-8', 'replace'))
+            fn = str(f.fileName)
+            pn = str(f.packageName)
             fcks.append(Function(name, srcl, srcs, srce, off, end,
                                  fn, pn))
         # Methods
         for j in range(p.numMeths):
             f = p.methods[j][0]
-            name = str(f.function[0].name.decode('utf-8', 'replace'))
+            name = str(f.function[0].name)
             srcl = int(f.function[0].srcLineLength)
             srcs = int(f.function[0].srcLineStart)
             srce = int(f.function[0].srcLineEnd)
             off = int(f.function[0].offset)
             end = int(f.function[0].end)
-            fn = str(f.function[0].fileName.decode('utf-8', 'replace'))
-            pn = str(f.function[0].packageName.decode('utf-8', 'replace'))
-            rec = str(f.receiver.decode('utf-8', 'replace'))
+            fn = str(f.function[0].fileName)
+            pn = str(f.function[0].packageName)
+            rec = str(f.receiver)
             meths.append(Method(name, srcl, srcs, srce, off, end,
                                 fn, pn, rec))
 
         # Package
-        name = str(p.name.decode('utf-8', 'replace'))
-        fp = str(p.filepath.decode('utf-8', 'replace'))
+        name = str(p.name)
+        fp = str(p.filepath)
         pkgs.append(Package(name, fp, fcks, meths))
     return pkgs
 
